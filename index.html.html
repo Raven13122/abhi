@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light" />
+<link rel="icon" href="data:," />
+<title>EMON App — Portfolio Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-soft:#f3f3ef;
+    --bg-hero:#e9eae4;
+    --ink:#0c0c0c;
+    --ink-2:#212121;
+    --muted:#6f7268;
+    --line:#e3e4dc;
+    --teal:#21ae8f;
+    --teal-deep:#148a6f;
+    --lime:#6bdf42;
+    --lime-soft:#ecf5a6;
+    --sun:#ffd02f;
+    --card:#111310;
+    --radius:28px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3,.tight{font-family:"Inter Tight","Inter",sans-serif;letter-spacing:-.03em;margin:0}
+  p{margin:0}
+  button{font-family:inherit;cursor:pointer;min-height:36px}
+  ::selection{background:var(--lime);color:#0c0c0c}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+
+  /* ---------- shared bits ---------- */
+  .label{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:var(--ink-2)}
+  .label .ast{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--teal);display:grid;place-items:center;font-size:17px;line-height:1;background:#fff}
+  .label.on-soft .ast{background:transparent}
+  .big{font-size:clamp(38px,5.2vw,68px);font-weight:600;line-height:1.02}
+  .side-note{font-size:13.5px;line-height:1.55;color:var(--muted);max-width:300px}
+  .pill-tag{display:inline-block;padding:9px 18px;border-radius:999px;background:var(--bg-soft);font-size:13.5px;font-weight:500;color:var(--ink-2)}
+  .spin{display:inline-block;animation:spin 14s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion: reduce){.spin{animation:none} html{scroll-behavior:auto}}
+
+  /* phone */
+  .phone{width:min(320px,78vw);aspect-ratio:320/650;background:#0b0d0c;border-radius:52px;padding:11px;box-shadow:0 40px 80px -24px rgba(12,20,14,.35),0 12px 28px rgba(12,20,14,.18);flex:none}
+  .phone .scr{background:#fbfbf8;border-radius:42px;height:100%;overflow:hidden;padding:20px 18px 16px;display:flex;flex-direction:column;position:relative}
+  .notch{width:96px;height:24px;background:#0b0d0c;border-radius:999px;margin:0 auto 14px;flex:none}
+  .status{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:#333;margin-bottom:12px}
+  .u-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--lime));display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px;flex:none}
+  .u-head small{display:block;color:var(--muted);font-size:10.5px}
+  .u-head b{font-size:14.5px}
+  .u-head .bell{margin-left:auto;width:34px;height:34px;border-radius:50%;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:14px}
+  .bal{background:var(--card);color:#fff;border-radius:22px;padding:16px 18px;margin-bottom:12px}
+  .bal small{color:#9aa39b;font-size:11px;display:flex;justify-content:space-between}
+  .bal .amt{font-family:"Inter Tight";font-size:31px;font-weight:700;letter-spacing:-.02em;margin:4px 0 2px}
+  .bal .delta{color:var(--lime);font-size:12px;font-weight:600}
+  .bal .acts{display:flex;gap:8px;margin-top:13px}
+  .bal .acts span{flex:1;background:#23261f;border-radius:13px;padding:9px 0;text-align:center;font-size:11px;color:#d8dcd2}
+  .insight{background:linear-gradient(100deg,var(--lime) 10%,var(--lime-soft) 130%);border-radius:18px;padding:13px 15px;display:flex;gap:11px;align-items:center;margin-bottom:12px;color:#0c0c0c}
+  .insight .ic{width:34px;height:34px;border-radius:50%;background:#0c0c0c;color:var(--lime);display:grid;place-items:center;font-size:15px;flex:none}
+  .insight b{font-size:13.5px;display:block}
+  .insight small{font-size:11px;opacity:.75}
+  .insight .arr{margin-left:auto;font-size:16px}
+  .rowline{display:flex;justify-content:space-between;align-items:baseline;margin:4px 0 9px}
+  .rowline b{font-size:13.5px}.rowline span{font-size:11px;color:var(--muted)}
+  .dev{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:11px 13px;margin-bottom:9px}
+  .dev .dic{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:15px;flex:none}
+  .dev b{font-size:13px;display:block}.dev small{font-size:11px;color:var(--muted)}
+  .dev .val{margin-left:auto;text-align:right}
+  .dev .val b{font-size:13px}.dev .val small{display:block}
+  .tabbar{margin-top:auto;display:flex;justify-content:space-around;align-items:center;padding-top:10px;border-top:1px solid var(--line);font-size:15px;color:#9aa39b}
+  .tabbar .fab{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--lime),#a4ec7a);color:#0c0c0c;display:grid;place-items:center;font-size:17px;box-shadow:0 8px 18px rgba(107,223,66,.45);margin-top:-22px;border:3px solid #fbfbf8}
+  .tabbar .on{color:#0c0c0c}
+
+  /* ---------- 1 · HERO ---------- */
+  .hero{background:radial-gradient(1100px 600px at 78% 30%,#f4f5ee 0%,var(--bg-hero) 55%);position:relative;overflow:hidden}
+  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;padding-top:34px;position:relative;z-index:3}
+  .brand{display:flex;gap:12px;align-items:flex-start}
+  .brand .mark{font-size:30px;line-height:1}
+  .brand b{font-family:"Inter Tight";font-size:21px;display:block;letter-spacing:-.02em}
+  .brand span{font-size:15px;font-weight:500}
+  .hero-badge{width:58px;height:58px;border-radius:50%;background:#0c0c0c;color:#fff;display:grid;place-items:center;font-size:26px}
+  .hero-grid{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:10px;padding:26px 0 0;position:relative;z-index:2}
+  .hero-ghost{font-family:"Inter Tight";font-weight:800;font-size:clamp(120px,22vw,300px);line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(12,12,12,.13);writing-mode:vertical-rl;transform:rotate(180deg);user-select:none;align-self:center;max-height:560px;overflow:hidden}
+  .hero-phone{transform:rotate(3.5deg) translateY(46px)}
+  .hero-side{align-self:center;padding-bottom:120px}
+  .hero-side .sticker{display:inline-block;background:var(--sun);border:2px solid #0c0c0c;border-radius:999px;padding:8px 16px;font-weight:700;font-size:13.5px;transform:rotate(-5deg);box-shadow:3px 3px 0 #0c0c0c;margin-bottom:18px}
+  .hero-side h2{font-size:clamp(24px,2.6vw,34px);font-weight:600;line-height:1.12;max-width:260px}
+  .hero-side p{color:var(--muted);font-size:14px;line-height:1.55;margin-top:12px;max-width:250px}
+  .hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+  .hero-meta span{border:1.5px solid #0c0c0c;border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:600;background:#fff}
+  .marquee{background:linear-gradient(90deg,var(--lime),var(--lime-soft));color:#0c0c0c;overflow:hidden;padding:13px 0;position:relative;z-index:4;border-block:1.5px solid #0c0c0c}
+  .marquee .track{display:flex;gap:0;white-space:nowrap;font-family:"Inter Tight";font-weight:600;font-size:15px;letter-spacing:.14em;animation:mq 26s linear infinite;width:max-content}
+  .marquee b{color:var(--teal-deep);font-weight:600}
+  @keyframes mq{to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion: reduce){.marquee .track{animation:none}}
+
+  /* ---------- 2 · ABOUT ---------- */
+  .about{padding:110px 0 30px;background:#fff}
+  .about-grid{display:grid;grid-template-columns:1.25fr .85fr;gap:26px;align-items:stretch}
+  .about h2{margin-top:22px;max-width:640px}
+  .about-box{border:1.5px solid var(--ink);border-radius:26px;padding:26px;position:relative;display:flex;align-items:flex-end;min-height:230px}
+  .about-box .dotav{position:absolute;top:-19px;left:26px;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--lime));border:3px solid #fff}
+  .about-box p{font-size:14.5px;line-height:1.6;color:var(--ink-2);max-width:340px}
+  .quote{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,5vw,70px);margin-top:90px;align-items:end}
+  .quote .qmark{width:64px;height:64px;border-radius:20px;background:var(--bg-soft);display:grid;place-items:center;font-size:26px}
+  .quote blockquote{margin:0;font-family:"Inter Tight";font-size:clamp(26px,3.6vw,44px);font-weight:600;line-height:1.18;letter-spacing:-.02em;max-width:820px}
+  .quote blockquote em{font-style:normal;color:#b9bcb0}
+  .quote small{display:block;margin-top:16px;font-family:"Inter";font-size:13px;color:var(--muted);letter-spacing:0}
+
+  /* ---------- 3 · ENERGY FLOW ---------- */
+  .flow{background:#fff;padding:110px 0 0;overflow:hidden}
+  .flow-head{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;flex-wrap:wrap}
+  .flow-head h2{margin-top:22px;max-width:520px}
+  .flow-stage{position:relative;margin-top:30px;display:flex;justify-content:center}
+  .flow-phone{transform:translateY(120px) rotate(-1.5deg)}
+  .float-card{position:absolute;background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px;box-shadow:0 18px 40px -14px rgba(12,20,14,.16);z-index:3}
+  .float-card .fh{display:flex;gap:11px;align-items:center}
+  .float-card .fic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:16px}
+  .float-card b{font-size:14.5px;display:block}.float-card small{color:var(--muted);font-size:12px}
+  .float-card .pct{color:var(--teal-deep);font-weight:700;font-size:16px;margin-top:10px}
+  .fc1{left:4%;top:110px;transform:rotate(-3deg)}
+  .fc2{right:4%;top:230px;transform:rotate(2.5deg)}
+  .flow-caption{position:absolute;left:4%;bottom:170px;z-index:3}
+  .flow-caption b{font-family:"Inter Tight";font-size:21px;font-weight:600;display:block;line-height:1.2;max-width:210px;margin-top:10px}
+
+  /* phone inner: flow screen */
+  .flow-ring{width:172px;height:172px;margin:8px auto 6px;position:relative}
+  .flow-ring svg{transform:rotate(-90deg)}
+  .flow-ring .ctr{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+  .flow-ring .ctr b{font-family:"Inter Tight";font-size:30px}
+  .flow-ring .ctr small{color:var(--muted);font-size:10.5px}
+  .chips{display:flex;gap:7px;justify-content:center;margin:10px 0 12px;flex-wrap:wrap}
+  .chips button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:600;min-height:36px}
+  .chips button.sel{background:#0c0c0c;color:#fff;border-color:#0c0c0c}
+
+  /* ---------- 4 · OVERVIEW ---------- */
+  .overview-zone{background:#fff;padding:0 12px}
+  .overview{background:var(--bg-soft);border-radius:52px;padding:clamp(34px,5vw,72px);margin-top:-40px;position:relative;z-index:5;box-shadow:0 -1px 0 var(--line)}
+  .ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,60px)}
+  .ov-grid h3{font-size:clamp(24px,2.7vw,35px);font-weight:600;line-height:1.22;margin-top:14px}
+  .ov-grid h3 em{font-style:normal;color:#b0b3a6}
+  .chart-card{background:var(--card);border-radius:26px;padding:22px;color:#fff;margin-top:28px}
+  .chart-card small{color:#9aa39b;font-size:11.5px;display:flex;justify-content:space-between}
+  .chart-card .cv{font-family:"Inter Tight";font-size:30px;font-weight:700;margin:4px 0 16px}
+  .chart-card .cv span{color:var(--lime);font-size:14px}
+  .bars{display:flex;align-items:flex-end;gap:10px;height:110px}
+  .bars i{flex:1;border-radius:999px;background:repeating-linear-gradient(135deg,#2c2f28 0 5px,#23261f 5px 10px);display:block}
+  .bars i.hot{background:linear-gradient(180deg,var(--lime-soft),var(--lime))}
+  .bar-days{display:flex;gap:10px;margin-top:9px}
+  .bar-days span{flex:1;text-align:center;font-size:10px;color:#8b9084;letter-spacing:.08em}
+  .ov-right{display:flex;flex-direction:column;gap:16px}
+  .mini{background:#fff;border-radius:22px;padding:20px 22px}
+  .mini .mh{display:flex;justify-content:space-between;align-items:center}
+  .mini b{font-family:"Inter Tight";font-size:17px;font-weight:600}
+  .mini p{color:var(--muted);font-size:13.5px;line-height:1.55;margin-top:7px}
+  .mini .info{width:22px;height:22px;border:1.5px solid var(--line);border-radius:50%;display:grid;place-items:center;font-size:11px;color:var(--muted)}
+  .meter{height:9px;border-radius:99px;background:var(--bg-soft);margin-top:14px;overflow:hidden;display:flex}
+  .meter i{background:linear-gradient(90deg,var(--teal),var(--lime));display:block}
+  .meter u{background:repeating-linear-gradient(90deg,#c9ccc0 0 2px,transparent 2px 7px);flex:1}
+  .ov-tags{display:flex;gap:9px;flex-wrap:wrap;margin-top:6px}
+
+  /* ---------- 5 · MODES ---------- */
+  .modes{background:#fff;padding:120px 0 0;overflow:hidden}
+  .modes-stage{position:relative;display:flex;justify-content:center;margin-top:16px}
+  .modes-phone{transform:rotate(9deg) translateY(60px);width:min(350px,84vw)}
+  .modes-phone .scr{background:#101208;color:#fff}
+  .modes-phone .status,.modes-phone .rowline span{color:#9aa39b}
+  .mode-list{display:flex;flex-direction:column;gap:9px}
+  .mode-opt{border:1.5px solid #2a2d24;background:#171a12;border-radius:17px;padding:13px 15px;text-align:left;color:#fff;width:100%}
+  .mode-opt b{font-size:14.5px;display:flex;justify-content:space-between;align-items:center}
+  .mode-opt small{color:#9aa39b;font-size:11.5px;line-height:1.45;display:block;margin-top:3px}
+  .mode-opt.sel{border-color:var(--lime);background:#1d2413}
+  .mode-opt.sel b::after{content:"●";color:var(--lime);font-size:11px}
+  .modes-caption{position:absolute;right:5%;bottom:190px;text-align:left;z-index:3}
+  .modes-caption b{font-family:"Inter Tight";font-size:21px;font-weight:600;display:block;line-height:1.2;max-width:200px;margin-top:10px}
+
+  /* ---------- 6 · TYPE & COLOR ---------- */
+  .typeco{background:#fff;padding:110px 0 90px}
+  .tc-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,80px);align-items:start}
+  .oval{border:1.5px solid var(--line);border-radius:50%/38%;padding:56px 0;display:flex;flex-direction:column;align-items:center;gap:0;position:relative}
+  .swatch{width:158px;height:158px;border-radius:50%;display:grid;place-items:center;text-align:center;font-size:12.5px;font-weight:600;margin-top:-26px;border:1px solid var(--line)}
+  .swatch:first-child{margin-top:0}
+  .sw-grad{background:linear-gradient(150deg,var(--lime-soft),var(--lime) 55%,var(--teal));color:#0c0c0c;border:none}
+  .sw-sun{background:var(--sun);color:#0c0c0c}
+  .sw-black{background:#0c0c0c;color:#fff;border-color:#0c0c0c}
+  .sw-white{background:#fff;color:#0c0c0c}
+  .sw-grey{background:#212121;color:#fff;border-color:#212121}
+  .tc-right h2{margin-top:22px}
+  .tc-note{margin-top:110px}
+  .tc-note b{font-family:"Inter Tight";font-size:20px;font-weight:600;display:block;line-height:1.25;max-width:230px;margin-top:10px}
+  .specimen{margin-top:44px;border-top:1.5px solid var(--ink);padding-top:18px}
+  .specimen .huge{font-family:"Inter Tight";font-weight:700;font-size:clamp(44px,5.4vw,74px);letter-spacing:-.04em;line-height:1}
+  .specimen p{color:var(--muted);font-size:13.5px;margin-top:10px;line-height:1.6;max-width:400px}
+  .token-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+
+  /* ---------- 7 · ONBOARDING FLOW ---------- */
+  .flow3-zone{padding:0 12px 12px}
+  .flow3{background:var(--bg-soft);border-radius:52px 52px 0 0;padding:clamp(34px,5vw,72px) clamp(20px,4vw,56px) 0;position:relative;overflow:hidden}
+  .flow3::before,.flow3::after{content:"";position:absolute;border-radius:50%;background:#e7e8df}
+  .flow3::before{width:560px;height:560px;left:-160px;top:60px}
+  .flow3::after{width:640px;height:640px;right:-220px;top:-160px;background:#ecece4}
+  .flow3-head{position:relative;z-index:2;display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start}
+  .flow3-head h2{margin-top:22px;max-width:480px}
+  .trio{position:relative;z-index:2;display:flex;justify-content:center;align-items:flex-end;gap:clamp(10px,3vw,36px);margin-top:44px}
+  .trio .phone{width:min(290px,72vw)}
+  .trio .p-l{transform:rotate(-8deg) translateY(90px)}
+  .trio .p-c{transform:translateY(120px)}
+  .trio .p-r{transform:rotate(7deg) translateY(70px)}
+  .pin-dots{display:flex;gap:12px;justify-content:center;margin:20px 0 8px}
+  .pin-dots i{width:15px;height:15px;border-radius:50%;background:#0c0c0c}
+  .pin-dots i:last-child{background:#fff;border:2px solid #0c0c0c}
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:16px}
+  .pad span{background:#fff;border:1px solid var(--line);border-radius:14px;text-align:center;padding:11px 0;font-weight:600;font-size:15px}
+  .success-ic{width:86px;height:86px;border-radius:26px;background:linear-gradient(140deg,var(--lime-soft),var(--lime));display:grid;place-items:center;font-size:36px;margin:26px auto 14px;transform:rotate(-5deg)}
+  .ctr-txt{text-align:center}
+  .ctr-txt b{font-family:"Inter Tight";font-size:19px;display:block}
+  .ctr-txt small{color:var(--muted);font-size:11.5px;line-height:1.5;display:block;margin-top:5px}
+
+  /* ---------- 7b · MORE SECTIONS (later reference boards) ---------- */
+  .statement{padding:110px 0 20px;text-align:center}
+  .statement h2{font-size:clamp(30px,4.4vw,56px);font-weight:600;line-height:1.14;max-width:880px;margin:0 auto}
+  .statement h2 em{font-style:normal;color:#b9bcb0}
+  .statement p{color:var(--muted);font-size:14.5px;margin-top:18px}
+  .need{padding:90px 0 10px}
+  .need-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:36px}
+  .need-card{background:var(--bg-soft);border-radius:26px;padding:28px;min-height:170px;display:flex;flex-direction:column}
+  .need-card .nic{width:46px;height:46px;border-radius:14px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:19px;margin-bottom:auto}
+  .need-card b{font-family:"Inter Tight";font-size:20px;font-weight:600;display:block;margin-top:22px}
+  .need-card p{color:var(--muted);font-size:13.5px;line-height:1.55;margin-top:6px;max-width:380px}
+  .assistant{padding:100px 0 90px}
+  .asst-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,60px);align-items:center}
+  .chat{display:flex;flex-direction:column;gap:10px}
+  .bubble{border-radius:20px;padding:15px 18px;font-size:14px;line-height:1.55;max-width:92%}
+  .bubble.ai{background:var(--bg-soft);border-bottom-left-radius:6px}
+  .bubble.ai b{display:block;font-family:"Inter Tight";font-size:14.5px;margin-bottom:3px}
+  .bubble.me{background:linear-gradient(100deg,var(--lime) 10%,var(--lime-soft) 140%);align-self:flex-end;border-bottom-right-radius:6px;font-weight:500}
+  .bubble small{color:var(--muted);font-size:11.5px;display:block;margin-top:5px}
+  .settings{padding:0 0 100px}
+  .set-list{border:1.5px solid var(--ink);border-radius:26px;margin-top:36px;overflow:hidden}
+  .set-row{display:flex;align-items:center;gap:14px;padding:19px 24px;border-bottom:1px solid var(--line);background:#fff}
+  .set-row:last-child{border-bottom:none}
+  .set-row .sic{width:40px;height:40px;border-radius:12px;background:var(--bg-soft);display:grid;place-items:center;font-size:16px;flex:none}
+  .set-row b{font-size:15px;display:block}.set-row small{color:var(--muted);font-size:12.5px}
+  .set-row .st{margin-left:auto;font-size:12.5px;font-weight:600;color:var(--teal-deep);background:#e7f6f1;border-radius:999px;padding:6px 13px;white-space:nowrap}
+  .set-row .st.grey{color:var(--muted);background:var(--bg-soft)}
+
+  /* ---------- 8 · SYSTEM STRIP + FOOTER ---------- */
+  .system{background:var(--bg-soft);color:var(--ink);border:1.5px solid var(--ink);border-radius:52px;margin:0 12px;padding:clamp(36px,5vw,70px)}
+  .system .label{color:var(--ink)}
+  .sys-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:36px}
+  .sys-grid .num{font-family:"Inter Tight";font-size:clamp(38px,4.6vw,62px);font-weight:700;letter-spacing:-.03em}
+  .sys-grid .num span{color:var(--teal-deep)}
+  .sys-grid p{color:var(--muted);font-size:13.5px;line-height:1.55;margin-top:6px;max-width:210px}
+  .sys-note{margin-top:38px;border-top:1px solid var(--line);padding-top:20px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+  .sys-note b{color:var(--ink)}
+  footer{padding:90px 0 46px;text-align:center}
+  .thanks-band{background:linear-gradient(120deg,var(--lime) 20%,var(--lime-soft));border-radius:52px;margin:0 12px;padding:clamp(40px,6vw,84px) 20px}
+  footer .foot-mark{font-size:34px}
+  footer h2{font-size:clamp(56px,11vw,150px);font-weight:800;line-height:.95;letter-spacing:-.045em}
+  footer h2 span{color:transparent;-webkit-text-stroke:2px #0c0c0c}
+  footer p{color:var(--muted);font-size:14px;margin-top:18px;line-height:1.6}
+  .appreciate{margin-top:28px;background:#0c0c0c;color:#fff;border:none;border-radius:999px;padding:14px 30px;font-size:15px;font-weight:600;display:inline-flex;gap:9px;align-items:center}
+  .appreciate.liked{background:var(--teal-deep)}
+  .credits{margin-top:54px;border-top:1px solid var(--line);padding-top:20px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);text-align:left}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;justify-items:center}
+    .hero-ghost{display:none}
+    .hero-side{padding-bottom:0;text-align:center;order:-1}
+    .hero-side h2,.hero-side p{margin-left:auto;margin-right:auto}
+    .hero-meta{justify-content:center}
+    .hero-phone{transform:rotate(2deg) translateY(30px)}
+    .about-grid,.ov-grid,.tc-grid,.need-grid,.asst-grid{grid-template-columns:1fr}
+    .tc-note{margin-top:36px}
+    .fc1{left:0;top:60px}.fc2{right:0;top:auto;bottom:300px}
+    .flow-caption{display:none}
+    .modes-caption{display:none}
+    .trio{flex-direction:column;align-items:center}
+    .trio .p-l,.trio .p-c,.trio .p-r{transform:rotate(0) translateY(30px)}
+    .sys-grid{grid-template-columns:1fr 1fr}
+    .quote{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ 1 · HERO — like the cover, but white ══════════ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <div class="brand">
+        <span class="mark spin">✳</span>
+        <div><b>EMON</b><span>Energy Management</span></div>
+      </div>
+      <div class="hero-badge spin">✳</div>
+    </div>
+
+    <div class="hero-grid">
+      <div class="hero-ghost" aria-hidden="true">EMON</div>
+
+      <div class="phone hero-phone" role="img" aria-label="EMON home screen showing today's energy, battery at 92 percent charging, and an energy insight">
+        <div class="scr">
+          <div class="notch"></div>
+          <div class="status"><span>9:41</span><span>▂▄▆ ●</span></div>
+          <div class="u-head">
+            <div class="avatar">A</div>
+            <div><small>Home · Pune</small><b>Welcome Back</b></div>
+            <div class="bell">✳</div>
+          </div>
+          <div class="bal">
+            <small><span>Energy Today</span><span>↗</span></small>
+            <div class="amt">18.4 kWh</div>
+            <div class="delta">↗ +2.6 kWh solar vs yesterday</div>
+            <div class="acts"><span>☀ Solar</span><span>▦ Battery</span><span>··· More</span></div>
+          </div>
+          <div class="dev">
+            <div class="dic" style="background:#e7f6f1">▦</div>
+            <div><b>Battery</b><small>28.8 kWh · Health 97%</small></div>
+            <div class="val"><b>92%</b><small style="color:var(--teal-deep)">Charging</small></div>
+          </div>
+          <div class="dev">
+            <div class="dic" style="background:#fff6d8">☀</div>
+            <div><b>ANDO Panels</b><small>Roof array</small></div>
+            <div class="val"><b>4.8 kW</b><small>Producing</small></div>
+          </div>
+          <div class="insight">
+            <div class="ic">✦</div>
+            <div><b>Energy Insight</b><small>Sun is strong — run the EV charge now</small></div>
+            <span class="arr">↗</span>
+          </div>
+          <div class="tabbar"><span class="on">⌂</span><span>▥</span><span class="fab">✦</span><span>⇄</span><span>◎</span></div>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <span class="sticker">67% self-sufficient ↗</span>
+        <h2>EMON — Energy App UI/UX Design</h2>
+        <p>Smart energy monitoring designed for seamless, live control of solar, battery &amp; home.</p>
+        <div class="hero-meta"><span>Mobile App</span><span>Design System</span><span>STROHM Ecosystem</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="marquee" aria-hidden="true"><div class="track" id="mq"></div></div>
+</header>
+
+<!-- ══════════ 2 · ABOUT ══════════ -->
+<section class="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div>
+        <span class="label"><span class="ast">✳</span> About</span>
+        <h2 class="big">Smarter Energy Management For Modern Homes &amp; Businesses</h2>
+      </div>
+      <div class="about-box">
+        <span class="dotav"></span>
+        <p>A smarter energy app designed to simplify how people see their power — live solar, battery and grid flow in real time, clear insights, and confident control of every watt, at home and at work.</p>
+      </div>
+    </div>
+
+    <div class="quote">
+      <div class="qmark">❋</div>
+      <blockquote>“We needed an app that makes <em>live energy flow,</em> clear insights and <em>effortless control</em> feel simple.”
+        <small>— The brief behind EMON, STROHM Energy</small>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 3 · ENERGY FLOW (the “Market” section, EMON-style) ══════════ -->
+<section class="flow">
+  <div class="wrap">
+    <div class="flow-head">
+      <div>
+        <span class="label"><span class="ast">✳</span> Energy Flow</span>
+        <h2 class="big">Real-Time Energy<br>Flow Insights</h2>
+      </div>
+      <p class="side-note" style="text-align:right">Get a clearer view of your energy with live flow, smart analysis and insights that help you understand production, spot waste, and make more confident decisions.</p>
+    </div>
+
+    <div class="flow-stage">
+      <div class="float-card fc1">
+        <div class="fh"><div class="fic" style="background:#fff6d8">☀</div><div><b>ANDO Solar</b><small>Producing now</small></div></div>
+        <div class="pct">↗ 4.8 kW</div>
+      </div>
+      <div class="float-card fc2">
+        <div class="fh"><div class="fic" style="background:#e7f6f1">▦</div><div><b>Battery</b><small>28.8 kWh</small></div></div>
+        <div class="pct">92% · Charging</div>
+      </div>
+      <div class="flow-caption"><span style="font-size:22px">❋</span><b>Understand Your Energy, Live</b></div>
+
+      <div class="phone flow-phone" role="img" aria-label="EMON energy flow screen showing 67 percent self-sufficiency and 94 percent efficiency">
+        <div class="scr">
+          <div class="notch"></div>
+          <div class="status"><span>9:41</span><span>▂▄▆ ●</span></div>
+          <div class="rowline"><b style="font-size:16px">‹ &nbsp;Energy Flow</b><span>⌕</span></div>
+          <div class="flow-ring">
+            <svg width="172" height="172" viewBox="0 0 172 172">
+              <circle cx="86" cy="86" r="74" fill="none" stroke="#eceee4" stroke-width="13"/>
+              <circle id="ringArc" cx="86" cy="86" r="74" fill="none" stroke="#21ae8f" stroke-width="13" stroke-linecap="round" stroke-dasharray="465" stroke-dashoffset="153"/>
+            </svg>
+            <div class="ctr"><div><b id="ringVal">67%</b><small style="display:block">Self-sufficiency</small></div></div>
+          </div>
+          <div class="chips" role="group" aria-label="Flow metric">
+            <button class="sel" data-v="67" data-off="153" data-l="Self-sufficiency">Self-use</button>
+            <button data-v="94" data-off="28" data-l="System efficiency">Efficiency</button>
+            <button data-v="92" data-off="37" data-l="Battery charge">Battery</button>
+          </div>
+          <div class="dev"><div class="dic" style="background:#fff6d8">☀</div><div><b>Solar → Home</b><small>Direct use</small></div><div class="val"><b>3.1 kW</b></div></div>
+          <div class="dev"><div class="dic" style="background:#e7f6f1">▦</div><div><b>Solar → Battery</b><small>Storing surplus</small></div><div class="val"><b>1.7 kW</b></div></div>
+          <div class="dev"><div class="dic" style="background:#eef0ff">⚡</div><div><b>Grid</b><small>Standby</small></div><div class="val"><b>0.0 kW</b></div></div>
+          <div class="tabbar"><span>⌂</span><span class="on">▥</span><span class="fab">✦</span><span>⇄</span><span>◎</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 4 · OVERVIEW (the white card, kept light) ══════════ -->
+<div class="overview-zone">
+  <section class="overview">
+    <div class="ov-grid">
+      <div>
+        <span style="color:var(--muted);font-size:14.5px">Overview</span>
+        <h3>Designed As An Intelligent Energy Ecosystem — EMON Combines Live Monitoring, Smart Insights, Reports And <em>Seamless Control For A Simpler Energy Experience.</em></h3>
+        <div class="chart-card">
+          <small><span>Energy This Week</span><span style="border:1px solid #33362c;border-radius:8px;padding:3px 9px;color:#d8dcd2">1W ⌄</span></small>
+          <div class="cv">128.6 kWh <span>+12.4%</span></div>
+          <div class="bars" aria-hidden="true">
+            <i style="height:34%"></i><i style="height:72%"></i><i style="height:52%"></i><i style="height:66%"></i><i class="hot" style="height:100%"></i><i style="height:38%"></i><i style="height:58%"></i>
+          </div>
+          <div class="bar-days"><span>SAT</span><span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span></div>
+        </div>
+      </div>
+      <div class="ov-right">
+        <div class="mini">
+          <div class="mh"><b>Live Flow, Not Guesswork</b><span class="info">i</span></div>
+          <p>Every screen answers one question in one glance — where is my energy going right now?</p>
+          <div class="meter"><i style="width:67%"></i><u></u></div>
+        </div>
+        <div class="mini">
+          <div class="mh"><b>Insights That Act</b><span class="info">i</span></div>
+          <p>Alerts and energy modes turn raw meter data into clear, actionable recommendations.</p>
+          <div class="meter"><i style="width:94%"></i><u></u></div>
+        </div>
+        <div class="ov-tags">
+          <span class="pill-tag">Dashboard</span><span class="pill-tag">Energy Flow</span><span class="pill-tag">Reports</span>
+          <span class="pill-tag">Alerts</span><span class="pill-tag">EV Charging</span><span class="pill-tag">Energy Modes</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════ 5 · MODES (the “Swap” section, EMON-style) ══════════ -->
+<section class="modes">
+  <div class="wrap">
+    <span class="label"><span class="ast">✳</span> Energy Modes</span>
+    <h2 class="big" style="margin-top:22px">Seamless &amp; Secure<br>Energy Control</h2>
+    <p class="side-note" style="margin-left:auto;text-align:right;margin-top:-56px">Switch how your home uses energy with clear pricing of every choice — self-use first, battery reserve, grid costs — all in one simple flow.</p>
+
+    <div class="modes-stage">
+      <div class="modes-caption"><span style="font-size:22px">❋</span><b>Intelligent &amp; Effortless Modes</b></div>
+      <div class="phone modes-phone">
+        <div class="scr">
+          <div class="notch" style="background:#000"></div>
+          <div class="status" style="color:#d8dcd2"><span>9:41</span><span>▂▄▆ ●</span></div>
+          <div class="rowline"><b style="font-size:16px;color:#fff">‹ &nbsp;Energy Mode</b><span>94% eff.</span></div>
+          <p style="color:#9aa39b;font-size:12px;line-height:1.5;margin-bottom:14px">Pick how EMON balances solar, battery and grid for the next hours.</p>
+          <div class="mode-list" role="group" aria-label="Choose an energy mode">
+            <button class="mode-opt sel" data-mode="Eco"><b>Eco — Self-Use First</b><small>Maximise solar, drain battery last. Best on sunny days.</small></button>
+            <button class="mode-opt" data-mode="Comfort"><b>Comfort — Never Run Dry</b><small>Keeps a 40% battery reserve for the evening, always.</small></button>
+            <button class="mode-opt" data-mode="Peak Shave"><b>Peak Shave — Beat Tariffs</b><small>Battery covers peak-price hours so the grid bill stays low.</small></button>
+            <button class="mode-opt" data-mode="EV Priority"><b>EV Priority — Charge First</b><small>Surplus solar goes straight to the car before the battery.</small></button>
+          </div>
+          <div class="insight" style="margin-top:14px">
+            <div class="ic">✦</div>
+            <div><b id="modeName">Eco is active</b><small id="modeHint">Estimated saving today · ₹ equivalent shown in Reports</small></div>
+            <span class="arr">↗</span>
+          </div>
+          <div class="tabbar" style="border-color:#26281f;color:#6d7263"><span>⌂</span><span>▥</span><span class="fab" style="border-color:#101208">✦</span><span class="on" style="color:#fff">⇄</span><span>◎</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 6 · TYPOGRAPHY & COLORS ══════════ -->
+<section class="typeco">
+  <div class="wrap">
+    <div class="tc-grid">
+      <div class="oval" role="img" aria-label="EMON colour palette: teal and lime gradient, solar yellow, black, white and dark grey">
+        <div class="swatch sw-grad">#21AE8F<br>#6BDF42</div>
+        <div class="swatch sw-sun">#FFD02F</div>
+        <div class="swatch sw-black">#0C0C0C</div>
+        <div class="swatch sw-white">#FFFFFF</div>
+        <div class="swatch sw-grey">#212121</div>
+      </div>
+      <div class="tc-right">
+        <span class="label"><span class="ast">✳</span> Typography &amp; Colors</span>
+        <h2 class="big">Clean Type &amp; Color System</h2>
+        <div class="tc-note"><span style="font-size:22px">❋</span><b>Clear Visual Design Language</b></div>
+        <div class="specimen">
+          <div class="huge">Inter Tight</div>
+          <p>One tight, confident voice for numbers that matter — kWh, percentages, live kilowatts — set large, tracked tight, never decorated.</p>
+          <div class="token-row">
+            <span class="pill-tag">Primitive → Semantic → Component</span>
+            <span class="pill-tag">8 Collections</span>
+            <span class="pill-tag">198 Variables</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 7 · ONBOARDING FLOW (the 3-phone finale) ══════════ -->
+<div class="flow3-zone">
+  <section class="flow3">
+    <div class="flow3-head">
+      <div>
+        <span class="label on-soft"><span class="ast">✳</span> Onboarding Flow</span>
+        <h2 class="big">A Smarter Onboarding Experience</h2>
+      </div>
+      <p class="side-note" style="text-align:right">A streamlined sign-in flow designed to make every step clear and confident — splash, login, PIN and fingerprint, then P1 smart-meter pairing before securely activating the account.</p>
+    </div>
+
+    <div class="trio">
+      <div class="phone p-l">
+        <div class="scr">
+          <div class="notch"></div>
+          <div class="ctr-txt" style="margin-top:56px"><span style="font-size:44px" class="spin">✳</span>
+            <b style="font-size:26px;margin-top:14px">EMON</b>
+            <small>Your energy, live.</small></div>
+          <div style="margin-top:auto">
+            <div class="dev"><div><b>Login</b><small>Email &amp; password</small></div><span style="margin-left:auto">→</span></div>
+            <div class="dev"><div><b>Create account</b><small>Residential · Commercial</small></div><span style="margin-left:auto">→</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phone p-c">
+        <div class="scr">
+          <div class="notch"></div>
+          <div class="ctr-txt" style="margin-top:30px"><b>Enter PIN</b><small>Your 4-digit EMON PIN</small></div>
+          <div class="pin-dots"><i></i><i></i><i></i><i></i></div>
+          <div class="pad"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span></span><span>0</span><span>⌫</span></div>
+          <p class="ctr-txt" style="margin-top:18px"><small>or use fingerprint ↓</small></p>
+          <div class="ctr-txt" style="font-size:40px;margin-top:6px">◎</div>
+        </div>
+      </div>
+
+      <div class="phone p-r">
+        <div class="scr">
+          <div class="notch"></div>
+          <div class="ctr-txt" style="margin-top:22px"><b style="font-size:15px;text-align:left">Successful</b><small style="text-align:left">Your home is connected</small></div>
+          <div class="success-ic">✓</div>
+          <div class="ctr-txt"><b>Account Activated</b><small>P1 meter paired · ANDO panels found<br>MOEBIUS inverter synced</small></div>
+          <div style="margin-top:20px">
+            <div class="rowline"><span>Solar</span><b>4.8 kW</b></div>
+            <div class="rowline"><span>Battery</span><b style="color:var(--teal-deep)">92%</b></div>
+            <div class="rowline"><span>Self-sufficiency</span><b>67%</b></div>
+            <div class="rowline"><span>Efficiency</span><b>94%</b></div>
+          </div>
+          <p class="ctr-txt" style="margin-top:auto"><small>Commercial accounts: under review — within 48 hours</small></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════ 7b · UNIFIED STATEMENT ══════════ -->
+<section class="statement">
+  <div class="wrap">
+    <h2>One App For <em>Solar, Battery, Grid</em> &amp; EV — Every Flow Designed To Feel Like <em>One System.</em></h2>
+    <p>Residential, commercial and installer — same components, same tokens, same calm.</p>
+  </div>
+</section>
+
+<!-- ══════════ 7c · EVERYTHING YOU NEED ══════════ -->
+<section class="need">
+  <div class="wrap">
+    <span class="label"><span class="ast">✳</span> Everything You Need</span>
+    <h2 class="big" style="margin-top:22px">Everything You Need,<br>Nothing You Don’t</h2>
+    <div class="need-grid">
+      <div class="need-card"><div class="nic">▥</div><b>Reports</b><p>Daily, weekly and monthly energy stories — production vs usage, savings and self-sufficiency, export-ready.</p></div>
+      <div class="need-card"><div class="nic">◔</div><b>Alerts</b><p>Battery low, inverter offline, usage spiking — alerts that say what happened and what to do, in one line.</p></div>
+      <div class="need-card"><div class="nic">⚡</div><b>EV Charging</b><p>Charge on surplus solar, schedule off-peak sessions, and see every session’s cost inside the same flow.</p></div>
+      <div class="need-card"><div class="nic">☀</div><b>Devices</b><p>ANDO panels, MOEBIUS inverters and the P1 smart meter — one device list, one health view, STROHM PASSPORT ready.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 7d · ENERGY ASSISTANT ══════════ -->
+<section class="assistant">
+  <div class="wrap">
+    <div class="asst-grid">
+      <div>
+        <span class="label"><span class="ast">✳</span> Energy Assistant</span>
+        <h2 class="big" style="margin-top:22px">Insights That Talk Like A Person</h2>
+        <p style="color:var(--muted);font-size:14.5px;line-height:1.6;margin-top:16px;max-width:420px">The insight layer reads live flow and answers in plain words — when to charge, when to wait, and what today’s sun is worth. No charts to decode.</p>
+      </div>
+      <div class="chat" role="img" aria-label="Example EMON assistant conversation about charging an EV on solar">
+        <div class="bubble ai"><b>✦ EMON Insight</b>Sun is strong till 2 pm. Your battery hits 92% by noon — the EV can take the rest.<small>Based on live flow · 67% self-sufficiency today</small></div>
+        <div class="bubble me">Charge the car now?</div>
+        <div class="bubble ai"><b>✦ EMON Insight</b>Yes — start now and it runs fully on solar. Waiting till evening would pull from the grid at peak price.<small>Efficiency holding at 94%</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 7e · SETTINGS & DEVICES ══════════ -->
+<section class="settings">
+  <div class="wrap">
+    <span class="label"><span class="ast">✳</span> Settings</span>
+    <h2 class="big" style="margin-top:22px">Paired Once,<br>Trusted Daily</h2>
+    <div class="set-list">
+      <div class="set-row"><div class="sic">⌁</div><div><b>P1 Smart Meter</b><small>Paired during onboarding</small></div><span class="st">Connected</span></div>
+      <div class="set-row"><div class="sic">☀</div><div><b>ANDO Solar Panels</b><small>Roof array · producing 4.8 kW</small></div><span class="st">Healthy</span></div>
+      <div class="set-row"><div class="sic">▦</div><div><b>Battery · 28.8 kWh</b><small>Health 97% · charging at 92%</small></div><span class="st">Charging</span></div>
+      <div class="set-row"><div class="sic">◈</div><div><b>MOEBIUS Inverter</b><small>Synced with EMON</small></div><span class="st">Synced</span></div>
+      <div class="set-row"><div class="sic">⬢</div><div><b>Commercial Account</b><small>Verification for business sites</small></div><span class="st grey">Under review · 48 hrs</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 8 · THE SYSTEM BEHIND IT ══════════ -->
+<section class="system">
+  <span class="label"><span class="ast">✳</span> Design System</span>
+  <h2 class="big" style="margin-top:20px">Built As A System,<br>Not Screens</h2>
+  <div class="sys-grid">
+    <div><div class="num">45<span>+</span></div><p>Components owned end-to-end — cards, flow diagrams, mode pickers, alerts.</p></div>
+    <div><div class="num">198</div><p>Variables across 8 collections. No raw values in components, ever.</p></div>
+    <div><div class="num">3<span>-tier</span></div><p>Token architecture: Primitive → Semantic → Component.</p></div>
+    <div><div class="num">16</div><p>App flows covered — onboarding, monitoring, reports, EV, installer &amp; commercial.</p></div>
+  </div>
+  <div class="sys-note">
+    <span><b>Scope beyond the app:</b> PRD / design-system document · STROHM website · ANDO data sheets (460–620W) · Wireframing</span>
+    <span><b>Team:</b> collaborators across product &amp; engineering — design system led by Abhishek</span>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="thanks-band">
+    <div class="foot-mark spin">✳</div>
+    <h2>THANK <span>YOU</span></h2>
+  </div>
+  <div class="wrap">
+    <p>EMON — Energy Management App · UI/UX Case Study<br>Designed by <b style="color:var(--ink)">Abhishek Katre</b>, Lead UI/UX Designer, Darwin Energy · 2 years of product design</p>
+    <button class="appreciate" id="appBtn" aria-pressed="false">👍 Appreciate <span id="appCount"></span></button>
+    <div class="credits">
+      <span>Case study layout inspired by a Behance AI-wallet presentation — rebuilt in white, for EMON.</span>
+      <span>Solar · Battery · Grid · EV — one app.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // marquee content (duplicated for the loop)
+  var items = "SOLAR <b>✳</b> BATTERY <b>✳</b> GRID <b>✳</b> EV CHARGING <b>✳</b> LIVE FLOW <b>✳</b> REPORTS <b>✳</b> ALERTS <b>✳</b> ENERGY MODES <b>✳</b> ";
+  document.getElementById('mq').innerHTML = "<span>" + items + "</span><span>" + items + "</span>";
+
+  // energy-flow metric chips -> ring + value
+  var ring = document.getElementById('ringArc'), val = document.getElementById('ringVal');
+  document.querySelectorAll('.chips button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.chips button').forEach(function(b){ b.classList.remove('sel'); });
+      btn.classList.add('sel');
+      val.textContent = btn.dataset.v + '%';
+      ring.style.strokeDashoffset = btn.dataset.off;
+      val.nextElementSibling.textContent = btn.dataset.l;
+    });
+  });
+
+  // energy modes -> active insight line
+  var hints = {
+    Eco: 'Sun-first routing on · battery held for the evening',
+    Comfort: 'Reserve locked at 40% · evening covered, always',
+    'Peak Shave': 'Battery armed for the 6–10 pm peak window',
+    'EV Priority': 'Surplus solar routed to the car first'
+  };
+  document.querySelectorAll('.mode-opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.mode-opt').forEach(function(b){ b.classList.remove('sel'); });
+      btn.classList.add('sel');
+      document.getElementById('modeName').textContent = btn.dataset.mode + ' is active';
+      document.getElementById('modeHint').textContent = hints[btn.dataset.mode] || '';
+    });
+  });
+
+  // appreciate
+  var liked = false, n = 0, ab = document.getElementById('appBtn');
+  ab.addEventListener('click', function(){
+    liked = !liked; n += liked ? 1 : -1;
+    ab.classList.toggle('liked', liked);
+    ab.setAttribute('aria-pressed', liked);
+    document.getElementById('appCount').textContent = n > 0 ? '· ' + n : '';
+  });
+</script>
+</body>
+</html>
